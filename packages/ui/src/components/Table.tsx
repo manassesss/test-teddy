@@ -1,4 +1,5 @@
-import { ReactNode, isValidElement, cloneElement } from 'react'
+import { isValidElement, cloneElement } from 'react'
+import type { ReactNode } from 'react'
 
 interface TableProps {
   headers: React.ReactNode[]
