@@ -1,5 +1,10 @@
 # Monorepo - Turborepo Starter
 
+## Demo
+
+Watch a video demo of the application in action:
+[Watch on Google Drive](https://drive.google.com/file/d/1B66ZZSF8PlSwOvLiBXbkS_tgQzGijxfa/view?usp=sharing)
+
 This repository is a monorepo managed with [Turborepo](https://turborepo.com/), containing multiple applications and shared packages.
 
 ## Getting Started
