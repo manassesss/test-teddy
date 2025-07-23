@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  host:
+    build: ./host
+    container_name: host
+    ports:
+      - "3000:80"
+  
+  login:
+    build: ./login
+    container_name: login
+    ports:
+      - "3001:80"
+
+  clientes:
+    build: ./clientes
+    container_name: clientes
+    ports:
+      - "3002:80"
