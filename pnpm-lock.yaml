@@ -149,6 +149,9 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
@@ -164,9 +167,6 @@ importers:
       typescript:
         specifier: 5.8.2
         version: 5.8.2
-      typescript-config:
-        specifier: link:..\packages\typescript-config
-        version: link:../packages/typescript-config
 
   apps/shell-app:
     dependencies:
@@ -235,6 +235,9 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
     devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
@@ -250,9 +253,6 @@ importers:
       typescript:
         specifier: 5.8.2
         version: 5.8.2
-      typescript-config:
-        specifier: link:..\packages\typescript-config
-        version: link:../packages/typescript-config
 
   packages/eslint-config:
     devDependencies:

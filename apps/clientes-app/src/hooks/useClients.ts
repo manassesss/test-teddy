@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { getClients } from '../services/api'
 import type { Client } from '../types/Client'
 
-export function useClients(page = 1, limit = 10, refresh = 0) {
+export function useClients(page = 1, limit = 10) {
   const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
   const [total, setTotal] = useState(0)
+  const [refreshIndex, setRefreshIndex] = useState(0)
+
+  const refresh = useCallback(() => {
+    setRefreshIndex((prev) => prev + 1)
+  }, [])
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -22,11 +27,12 @@ export function useClients(page = 1, limit = 10, refresh = 0) {
     }
 
     fetchClients()
-  }, [page, limit, refresh]) 
+  }, [page, limit, refreshIndex]) 
 
   return {
     clients,
     loading,
-    total
+    total,
+    refresh
   }
 }

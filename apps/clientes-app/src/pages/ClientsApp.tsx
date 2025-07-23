@@ -20,12 +20,11 @@ import {
 
 function ClientesApp() {
   const [page, setPage] = useState(1)
-  const [refresh, setRefresh] = useState(0)
   const [selectedClients, setSelectedClients] = useState<number[]>([])
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false)
   const limit = 10
 
-  const { clients, loading, total } = useClients(page, limit, refresh)
+  const { clients, loading, total, refresh } = useClients(page, limit)
   const navigate = useNavigate()
   const [clientToDelete, setClientToDelete] = useState<number | null>(null)
   const totalPages = total
@@ -35,7 +34,7 @@ function ClientesApp() {
     try {
       await deleteClient(clientToDelete)
       setClientToDelete(null)
-      setRefresh((prev) => prev + 1)
+      refresh()
     } catch (error) {
       console.error('Failed to delete client:', error)
       alert('Failed to delete client.')
@@ -64,21 +63,6 @@ function ClientesApp() {
     const noneSelected = selectedClients.length === 0
     selectAllRef.current.indeterminate = !allSelected && !noneSelected
   }, [selectedClients, clients])
-
-  if (loading) {
-    return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size={48} />
-      </div>
-    )
-  }
 
   return (
     <>
@@ -114,56 +98,63 @@ function ClientesApp() {
           </div>
         </div>
 
-        <Table
-          headers={[
-            <input
-              key="selectAll"
-              type="checkbox"
-              ref={selectAllRef}
-              onChange={toggleSelectAll}
-              checked={clients.length > 0 && selectedClients.length === clients.length}
-            />,
-            'ID',
-            'Name',
-            'Salary',
-            'Valuation',
-            'Created At',
-            'Updated At',
-            'Actions',
-          ]}
-        >
-          {clients.map((client) => (
-            <tr key={client.id}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedClients.includes(client.id)}
-                  onChange={() => toggleSelectOne(client.id)}
-                />
-              </td>
-              <td>{client.id}</td>
-              <td>{client.name}</td>
-              <td>R$ {client.salary.toLocaleString()}</td>
-              <td>R$ {client.companyValuation.toLocaleString()}</td>
-              <td>{new Date(client.createdAt).toLocaleDateString()}</td>
-              <td>{new Date(client.updatedAt).toLocaleDateString()}</td>
-              <td style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <IconButton
-                  icon={<FaEdit size={14} />}
-                  variant="primary"
-                  rounded
-                  onClick={() => navigate(`/clientes/${client.id}/edit`)}
-                />
-                <IconButton
-                  icon={<FaTrash size={14} />}
-                  variant="danger"
-                  rounded
-                  onClick={() => setClientToDelete(client.id)}
-                />
-              </td>
-            </tr>
-          ))}
-        </Table>
+        {/* Área da tabela e loading */}
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '320px', width: '100%' }}>
+            <Spinner size={48} />
+          </div>
+        ) : (
+          <Table
+            headers={[
+              <input
+                key="selectAll"
+                type="checkbox"
+                ref={selectAllRef}
+                onChange={toggleSelectAll}
+                checked={clients.length > 0 && selectedClients.length === clients.length}
+              />,
+              'ID',
+              'Name',
+              'Salary',
+              'Valuation',
+              'Created At',
+              'Updated At',
+              'Actions',
+            ]}
+          >
+            {clients.map((client) => (
+              <tr key={client.id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedClients.includes(client.id)}
+                    onChange={() => toggleSelectOne(client.id)}
+                  />
+                </td>
+                <td>{client.id}</td>
+                <td>{client.name}</td>
+                <td>R$ {client.salary.toLocaleString()}</td>
+                <td>R$ {client.companyValuation.toLocaleString()}</td>
+                <td>{new Date(client.createdAt).toLocaleDateString()}</td>
+                <td>{new Date(client.updatedAt).toLocaleDateString()}</td>
+                <td style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <IconButton
+                    icon={<FaEdit size={14} />}
+                    variant="primary"
+                    rounded
+                    onClick={() => navigate(`/clientes/${client.id}/edit`)}
+                  />
+                  <IconButton
+                    icon={<FaTrash size={14} />}
+                    variant="danger"
+                    rounded
+                    onClick={() => setClientToDelete(client.id)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </Table>
+        )}
 
         <div
           style={{

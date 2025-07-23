@@ -37,25 +37,38 @@ export function Table({ headers, children }: TableProps) {
         </thead>
         <tbody>
           {Array.isArray(children)
-            ? children.map((row: any, rowIndex: number) =>
+            ? children.map((row, rowIndex) =>
                 isValidElement(row)
-                  ? cloneElement(row, {
+                  ? cloneElement(row as React.ReactElement<any>, {
                       style: {
                         backgroundColor: rowIndex % 2 === 0 ? '#ffffff' : '#f9f9f9',
                       },
-                      children: Array.isArray(row.props.children)
-                        ? row.props.children.map((td: any, i: number) =>
+                      children: (() => {
+                        const rowChildren = (row.props as { children?: React.ReactNode }).children;
+                        if (Array.isArray(rowChildren)) {
+                          return rowChildren.map((td, i) =>
                             isValidElement(td)
-                              ? cloneElement(td, {
-                                  'data-label': headers[i],
+                              ? cloneElement(td as React.ReactElement<any>, {
+                                  ...((td.type === 'td' || td.type === 'th') && { ['data-label']: headers[i] }),
                                   style: {
                                     padding: '1rem 0.75rem',
-                                    ...td.props.style,
+                                    ...((td.props as { style?: React.CSSProperties }).style),
                                   },
                                 })
                               : td
-                          )
-                        : row.props.children,
+                          );
+                        } else if (isValidElement(rowChildren)) {
+                          return cloneElement(rowChildren as React.ReactElement<any>, {
+                            ...((rowChildren.type === 'td' || rowChildren.type === 'th') && { ['data-label']: headers[0] }),
+                            style: {
+                              padding: '1rem 0.75rem',
+                              ...((rowChildren.props as { style?: React.CSSProperties }).style),
+                            },
+                          });
+                        } else {
+                          return rowChildren;
+                        }
+                      })(),
                     })
                   : row
               )
