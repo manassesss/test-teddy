@@ -1,5 +1,6 @@
 // Spinner.tsx
-import { CSSProperties, useEffect } from 'react'
+import { useEffect } from 'react'
+import type { CSSProperties } from 'react'
 
 export function Spinner({ size = 32 }: { size?: number }) {
   const style: CSSProperties = {
