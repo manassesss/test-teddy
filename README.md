@@ -1,4 +1,85 @@
-# Turborepo starter
+# Monorepo - Turborepo Starter
+
+This repository is a monorepo managed with [Turborepo](https://turborepo.com/), containing multiple applications and shared packages.
+
+## Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) >= 18
+- [pnpm](https://pnpm.io/) >= 8
+
+### Install dependencies
+
+From the root of the project, run:
+
+```sh
+pnpm install
+```
+
+### Running the apps
+
+You can run all apps in development mode using Turborepo:
+
+```sh
+pnpm dev
+```
+
+Or run a specific app (for example, `web`, `docs`, `clientes-app`, `auth-app`, `shell-app`):
+
+```sh
+pnpm --filter web dev
+pnpm --filter docs dev
+pnpm --filter clientes-app dev
+pnpm --filter auth-app dev
+pnpm --filter shell-app dev
+```
+
+### Building the apps
+
+To build all apps and packages:
+
+```sh
+pnpm build
+```
+
+Or build a specific app:
+
+```sh
+pnpm --filter web build
+pnpm --filter docs build
+```
+
+### Project Structure
+
+- `apps/` - Applications (Next.js, Vite, etc)
+  - `web/` - Next.js app
+  - `docs/` - Next.js app
+  - `clientes-app/` - Vite + React app
+  - `auth-app/` - Vite + React app
+  - `shell-app/` - Vite + React app
+- `packages/` - Shared packages
+  - `ui/` - Design system (React components)
+  - `eslint-config/` - Shared ESLint config
+  - `typescript-config/` - Shared TypeScript config
+
+### Useful Commands
+
+- `pnpm install` - Install all dependencies
+- `pnpm dev` - Start all apps in dev mode
+- `pnpm build` - Build all apps and packages
+- `pnpm lint` - Lint all packages and apps
+- `pnpm --filter <app> dev` - Start a specific app in dev mode
+- `pnpm --filter <app> build` - Build a specific app
+
+### Notes
+- All apps and packages use TypeScript.
+- Shared UI components are in `packages/ui` and can be imported in any app.
+- TypeScript and ESLint configs are shared via `packages/typescript-config` and `packages/eslint-config`.
+- For Next.js apps, if you use UI components that use React hooks, they are already marked with `"use client"` as needed.
+
+---
+
+# Original Turborepo Template Info
 
 This Turborepo starter is maintained by the Turborepo core team.
 
